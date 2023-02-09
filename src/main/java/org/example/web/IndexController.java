@@ -1,6 +1,7 @@
 package org.example.web;
 
 import lombok.RequiredArgsConstructor;
+import org.example.config.auth.LoginUser;
 import org.example.config.auth.dto.SessionUser;
 import org.example.service.posts.PostsService;
 import org.example.web.dto.PostsResponseDto;
@@ -19,11 +20,8 @@ public class IndexController {
     private final HttpSession httpSession; //로그인 기능을 위한 추가
 
     @GetMapping("/")
-    public String index(Model model){
+    public String index(Model model, @LoginUser SessionUser user){ //수정된 로그인 세션을 받아오기 위한 어노테이션 추가
         model.addAttribute("posts",postsService.findAllDesc());
-
-        //로그인 기능관련 부분 추가
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
         if(user != null){
             model.addAttribute("userName", user.getName());
